@@ -4,15 +4,17 @@ const MerkleTree = require('../utils/MerkleTree');
 
 const serverUrl = 'http://localhost:8225';
 
+const tree = new MerkleTree(niceList);
+
 async function main() {
 
-  const names = ["Mae Hyatt", "Beth Stracke", "Ms. Angel Morissette","Jorden Peterson"]; 
+  const name =  "Ms. Angel Morissette"; 
+  const index = niceList.findIndex(n => n === name)
+  const proof = tree.getProof(index)
 
-  names.forEach(async name => {
-    const { data: gift } = await axios.post(`${serverUrl}/gift`, { name });
+  const { data: gift } = await axios.post(`${serverUrl}/gift`, { proof, name });
 
-    console.log({ name, gift });
-  })
+  console.log({ name, gift });
 }
 
 main();
